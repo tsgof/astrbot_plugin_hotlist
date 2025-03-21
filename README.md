@@ -1,9 +1,4 @@
-# helloworld
+# hotlist
 
-AstrBot 插件模板
+这是一个用于获取B站热门视频榜单的插件。
 
-A template plugin for AstrBot plugin feature
-
-# 支持
-
-[帮助文档](https://astrbot.app)
