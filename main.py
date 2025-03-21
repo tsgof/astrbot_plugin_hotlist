@@ -1,7 +1,7 @@
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from astrbot.api import logger
-import searchbhot
+from .searchbhot import searchbhot
 @register("hotlist", "Tsgof", "获取B站热门榜单", "1.0.0")
 class MyPlugin(Star):
     def __init__(self, context: Context):
@@ -17,7 +17,8 @@ class MyPlugin(Star):
         logger.info(message_chain)
         #yield event.plain_result(f"Hello, {user_name}, 你发了 {message_str}!") # 发送一条纯文本消息
          # 打印结果
-        results = searchbhot.get_hot_list()
+        results = searchbhot()
+        news=""
         for i, item in enumerate(results, 1):
             news+=(f'【{i}】')
             news+=(f'标题：{item["标题"]}\t')
