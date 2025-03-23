@@ -1,30 +1,55 @@
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
+from astrbot.api.message_components import *
 from astrbot.api import logger
 from .searchbhot import searchbhot
+from .searchbaidu import get_baidu_hotsearch
 @register("hotlist", "Tsgof", "获取B站热门榜单", "1.0.0")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
     
-    # 注册指令的装饰器。指令名为 helloworld。注册成功后，发送 `/helloworld` 就会触发这个指令，并回复 `你好, {user_name}!`
+    
     @filter.command("bhot")
-    async def helloworld(self, event: AstrMessageEvent):
-        '''这是一个 hello world 指令''' # 这是 handler 的描述，将会被解析方便用户了解插件内容。建议填写。
-        #user_name = event.get_sender_name()
-        #message_str = event.message_str # 用户发的纯文本消息字符串
-        message_chain = event.get_messages() # 用户所发的消息的消息链 # from astrbot.api.message_components import *
+    async def b_hot(self, event: AstrMessageEvent):
+        '''发送B站热门视频榜单''' 
+
+        message_chain = event.get_messages() 
         logger.info(message_chain)
-        #yield event.plain_result(f"Hello, {user_name}, 你发了 {message_str}!") # 发送一条纯文本消息
-         # 打印结果
+
         results = searchbhot()
-        news=""
+        # At 消息发送者
+        
         for i, item in enumerate(results, 1):
-            news+=(f'【{i}】')
-            news+=(f'标题：{item["标题"]}\t')
-            news+=(f'作者：{item["作者"]}\t')
-            news+=(f'播放量：{item["播放量"]}\t')
-            news+=(f'链接：{item["链接"]}\n')
-        yield event.plain_result(news)
+            chain = [] 
+            str1 = f'【{i}】标题：{item["标题"]}\t'
+            str2 = f'作者：{item["作者"]}\t播放量：{item["播放量"]}\t链接：{item["链接"]}\n'
+            chain.extend([
+                Plain(str1),
+                Image.fromURL(item["封面"]),
+                Plain(str2)
+            ])
+            yield event.chain_result(chain)
+    
+    @filter.command("baiduhot")
+    async def baidu_hot(self, event: AstrMessageEvent):
+        '''发送B站热门视频榜单''' 
+
+        message_chain = event.get_messages() 
+        logger.info(message_chain)
+
+        results = get_baidu_hotsearch()
+        # At 消息发送者
+        
+        for i, item in enumerate(results, 1):
+            chain = [] 
+            str1 = f'【{i}】标题：{item["title"]}\t'
+            str2 = f'热搜指数：{item["hot_index"]}\t链接：{item["detail_url"]}\n'
+            chain.extend([
+                Plain(str1),
+                Image.fromURL(item["image_url"]),
+                Plain(str2)
+            ])
+            yield event.chain_result(chain)
     async def terminate(self):
         '''可选择实现 terminate 函数，当插件被卸载/停用时会调用。'''

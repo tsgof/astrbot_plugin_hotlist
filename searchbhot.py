@@ -25,14 +25,16 @@ def searchbhot():
             title = video['title']                # 标题
             author = video['owner']['name']       # 作者
             play = video['stat']['view']          # 播放量
-            bvid = video['bvid']                  # 视频BV号
+            bvid = video['bvid']  
+            pic= video['pic']                # 视频BV号
             video_url = f'https://www.bilibili.com/video/{bvid}'  # 视频链接
-        
+
             results.append({
                 '标题': title,
                 '作者': author,
                 '播放量': play,
-                '链接': video_url
+                '链接': video_url,
+                '封面': pic
             })
     
     
