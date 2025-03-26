@@ -20,9 +20,9 @@ class MyPlugin(Star):
 
         results = searchbhot()
         # At 消息发送者
-        
+        chain = []
         for i, item in enumerate(results, 1):
-            chain = [] 
+             
             str1 = f'【{i}】标题：{item["标题"]}\t'
             str2 = f'作者：{item["作者"]}\t播放量：{item["播放量"]}\t链接：{item["链接"]}\n'
             chain.extend([
@@ -30,7 +30,7 @@ class MyPlugin(Star):
                 Image.fromURL(item["封面"]),
                 Plain(str2)
             ])
-            yield event.chain_result(chain)
+        yield event.chain_result(chain)
     
     @filter.command("baiduhot")
     async def baidu_hot(self, event: AstrMessageEvent):
@@ -41,9 +41,9 @@ class MyPlugin(Star):
 
         results = get_baidu_hotsearch()
         # At 消息发送者
-        
+        chain = [] 
         for i, item in enumerate(results, 1):
-            chain = [] 
+            
             str1 = f'【{i}】标题：{item["title"]}\t'
             str2 = f'热搜指数：{item["hot_index"]}\t链接：{item["detail_url"]}\n'
             chain.extend([
@@ -51,7 +51,7 @@ class MyPlugin(Star):
                 Image.fromURL(item["image_url"]),
                 Plain(str2)
             ])
-            yield event.chain_result(chain)
+        yield event.chain_result(chain)
         
     @filter.command("epic")
     async def epic_free_games(self, event: AstrMessageEvent):  # ✅ 重命名方法
